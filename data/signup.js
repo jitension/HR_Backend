@@ -1,4 +1,7 @@
 const Collections = require("../config/Collections.js");
+const nodeMailer = require("../nodeMailer.js");
+var randomize = require('randomatic');
+
 var uuid = require('uuid');
 const bcrypt = require('bcrypt-nodejs');
 const userCollection = Collections.users;
@@ -29,6 +32,7 @@ let exportsMethod = {
                             email: userInfo.email,
                             number: userInfo.number,
                             password: bcrypt.hashSync(userInfo.password),
+                            regCode: randomize('0', 4),
                         };
 
                         return insertUser
@@ -37,7 +41,10 @@ let exportsMethod = {
                                 if (newInsertInformation == null) {
                                     return Promise.reject("unable to add a User!");
                                 }
-                                return newInsertInformation.insertedId;
+                                else {
+                                    nodeMailer.sendMail(newUser.email, newUser.regCode);
+                                    return newInsertInformation.insertedId;
+                                }
                             })
                             .then((newId) => {
                                 //return newly added record
@@ -67,6 +74,26 @@ let exportsMethod = {
         });
     },
 
+    // method to verify registeration
+
+    verifyRegisteration(email, regCode) {
+        return userCollection().then((UserData) => {
+            return UserData.findOne({ email: email })
+                .then((User) => {
+                    if (!User.regCode == regCode)
+                        return {
+                            status: false,
+                            message: "Incorrect registeration code!!"
+                        };
+                    const data = {
+                        status: true,
+                        message: "Code successflly authenticated"
+                    }
+                    return data;
+                })
+        });
+    },
+
     // method to get all the users
     getAllUsers() {
         return userCollection().then((UserskData) => {
@@ -81,7 +108,6 @@ let exportsMethod = {
 
 
         return userCollection().then((updateUserData) => {
-            console.log(data);
             let updateUser = {
                 $set:
                 {

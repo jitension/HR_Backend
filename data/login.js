@@ -13,10 +13,8 @@ let exportsMethod = {
         }
         else {
             return userCollection().then((UserData) => {
-
                 return UserData.findOne({ email: userCredential.email })
                     .then((User) => {
-                        console.log(User)
                         if (!bcrypt.compareSync(userCredential.password, User.password))
                             return {
                                 status: false,
