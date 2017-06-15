@@ -1,0 +1,23 @@
+{
+  "name": "hrbackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jitendra purohit",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.2",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.4.1",
+    "mongodb": "^2.2.19",
+    "node-uuid": "^1.4.7",
+    "require_optional": "^1.0.1",
+    "uuid": "^2.0.3"
+  }
+}
