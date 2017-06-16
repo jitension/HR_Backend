@@ -6,7 +6,7 @@ const secretKey = "MyKey"; // secret key to hash password
 
 let exportsMethod = {
 
-// method to authenticate user
+    // method to authenticate user
     verifyUser(userCredential) {
         if (!userCredential) {
             return Promise.reject("You must provide a data!");
@@ -15,6 +15,12 @@ let exportsMethod = {
             return userCollection().then((UserData) => {
                 return UserData.findOne({ email: userCredential.email })
                     .then((User) => {
+                        if (!User.verified) {
+                            return {
+                                status: false,
+                                message: "Please verify before logging in!!"
+                            };
+                        }
                         if (!bcrypt.compareSync(userCredential.password, User.password))
                             return {
                                 status: false,

@@ -10,13 +10,17 @@ var transporter = nodemailer.createTransport({
 
 let exportsMethod = {
 
-    sendMail(sendTo, registerationCode) {
-        console.log(sendTo)
+    sendMail(first_name, sendTo, registerationCode) {
         var mailOptions = {
             from: 'Honest Response',
             to: sendTo,
             subject: 'Registeration Code from Honest Response',
-            html: `<p>Your Registeration code is: <strong>${registerationCode}</strong> </p>`
+            html: `<p> Hello ${first_name}, </p>
+                   <p>Your Registeration code is: 
+                   <strong>${registerationCode}</strong> </p>
+                   <br />
+                   <p>Regards, </p>
+                   <h4> Team Honest Response </h4>`
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -27,7 +31,6 @@ let exportsMethod = {
             }
         });
     }
-
 }
 
 module.exports = exportsMethod;

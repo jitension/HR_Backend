@@ -33,6 +33,7 @@ let exportsMethod = {
                             number: userInfo.number,
                             password: bcrypt.hashSync(userInfo.password),
                             regCode: randomize('0', 4),
+                            verified: false,
                         };
 
                         return insertUser
@@ -42,7 +43,7 @@ let exportsMethod = {
                                     return Promise.reject("unable to add a User!");
                                 }
                                 else {
-                                    nodeMailer.sendMail(newUser.email, newUser.regCode);
+                                    nodeMailer.sendMail(newUser.first_name, newUser.email, newUser.regCode);
                                     return newInsertInformation.insertedId;
                                 }
                             })
@@ -74,24 +75,47 @@ let exportsMethod = {
         });
     },
 
-    // method to verify registeration
+    // method to verify registeration and if successful update verified field to true
 
     verifyRegisteration(email, regCode) {
         return userCollection().then((UserData) => {
             return UserData.findOne({ email: email })
                 .then((User) => {
-                    if (!User.regCode == regCode)
+                    if (!(User.regCode === regCode))
                         return {
                             status: false,
                             message: "Incorrect registeration code!!"
                         };
-                    const data = {
-                        status: true,
-                        message: "Code successflly authenticated"
+                    else {
+                        const data = {
+                            status: true,
+                            message: "Code successflly authenticated"
+                        }
+                        return data;
                     }
-                    return data;
+
+                }).then((isVerified) => {
+                    if (isVerified.status) {
+                        let updateUser = {
+                            $set:
+                            {
+                                verified: true,
+                            }
+                        };
+                        return UserData.updateOne({
+                            email: email
+                        }, updateUser).then((response) => {
+                            console.log(response)
+                            return isVerified;//this.getUserById(userId);
+                        }, (err) => {
+                            return Promise.reject("Cannot update this user");
+                        });
+                    }
+                    else
+                        return isVerified;
                 })
         });
+
     },
 
     // method to get all the users
