@@ -4,7 +4,7 @@ const settings = {
     mongoConfig: {
         //  serverUrl: "mongodb://localhost:27017/",
         serverUrl: "mongodb://heroku_fjd9fqcl:Sevenwonder7744@ds131312.mlab.com:31312/",
-        database: "Honest_Response",
+        database: "heroku_fjd9fqcl",
         
     }
 };
