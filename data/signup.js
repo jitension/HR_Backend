@@ -30,7 +30,7 @@ let exportsMethod = {
                             first_name: userInfo.first_name,
                             last_name: userInfo.last_name,
                             email: userInfo.email,
-                            number: userInfo.number,
+                            grad_year: userInfo.grad_year,
                             password: bcrypt.hashSync(userInfo.password),
                             regCode: randomize('0', 4),
                             verified: false,
