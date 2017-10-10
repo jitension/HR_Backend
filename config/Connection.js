@@ -3,8 +3,8 @@ const MongoClient = require("mongodb").MongoClient;
 const settings = {
     mongoConfig: {
         //  serverUrl: "mongodb://localhost:27017/",
-        serverUrl: "mongodb://heroku_fjd9fqcl:Sevenwonder7744@ds131312.mlab.com:31312/",
-        database: "heroku_fjd9fqcl",
+        serverUrl: "your_server_url",
+        database: "your_database_name",
         
     }
 };
